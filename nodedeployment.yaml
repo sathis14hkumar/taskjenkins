@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app-deployment
+spec:
+  replicas: 1    # Number of replicas you want to run
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: node-app
+          image: sathish143kumar/nodejs-image-demo:latest   # Replace with your Docker image name and version/tag
+          ports:
+            - containerPort: 8000   # The port your Node.js application listens on
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: node-app
+  ports:
+    - protocol: TCP
+      port: 80    # Port exposed externally by the LoadBalancer
+      targetPort: 8000 
