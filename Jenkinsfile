@@ -25,6 +25,7 @@ pipeline {
         }
         
     }
+    }
  post {
         success {
             script {
@@ -46,6 +47,4 @@ def sendTelegramNotification(message) {
     def TELEGRAM_CHAT_ID = '1351870173'
 
     sh "curl -X POST -H 'Content-Type: application/json' -d '{\"chat_id\":\"${TELEGRAM_CHAT_ID}\",\"text\":\"${message}\"}' https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-}
-
 }
