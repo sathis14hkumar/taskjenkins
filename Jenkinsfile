@@ -31,12 +31,7 @@ stage('Push Notification') {
                               "<b>Branch</b>: main \\n" +
                               "<b>Build</b>: OK \\n" +
                               "<b>Test suite</b> = TEST CASE PASSED"
-            } else {
-                messageText = "<b>Project</b> : Jenkinspvt \\n" +
-                              "<b>Branch</b>: main \\n" +
-                              "<b>Build</b>: ERROR \\n" +
-                              "<b>Test suite</b> = TEST CASE FAILED"
-            }
+            } 
 
             withCredentials([
                 string(credentialsId: 'TELEGRAM_TOKEN', variable: 'TOKEN'),
