@@ -23,7 +23,7 @@ pipeline {
 stage('Push Notification') {
     steps {
         script {
-            def buildStatus = env.BUILD_STATUS ?: 'UNKNOWN'
+            def buildStatus = currentBuild.result ?: 'UNKNOWN'
             def messageText
 
             if (buildStatus == 'SUCCESS') {
