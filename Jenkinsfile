@@ -18,7 +18,7 @@ pipeline {
             steps {
                 // Replace this with the actual command to build your Node.js application
                 sh 'npm install'
-                sh 'npm run build'
+                
             }
         }
 
