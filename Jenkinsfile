@@ -20,33 +20,38 @@ pipeline {
           }
           }
 
-     stage('Push Notification') {
-            steps {
-                script {
-                    def buildStatus = env.BUILD_STATUS ?: 'UNKNOWN'
-                    def messageText
+stage('Push Notification') {
+    steps {
+        script {
+            def buildStatus = env.BUILD_STATUS ?: 'UNKNOWN'
+            def messageText
 
-                    if (buildStatus == 'SUCCESS') {
-                        messageText = "<b>Test suite</b> = TEST CASE PASSED"
-                                      
-                    } else {
-                        messageText = "<b>Test suite</b> = TEST CASE FAILED"
-                                      
-                    }
-
-                    withCredentials([
-                        string(credentialsId: 'TELEGRAM_TOKEN', variable: 'TOKEN'),
-                        string(credentialsId: 'CHAT_ID', variable: 'CHAT_ID')
-                    ]) {
-                        sh """
-                            curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
-                            -d "chat_id=${CHAT_ID}" \
-                            -d "parse_mode=HTML" \
-                            -d "text=${messageText}"
-                        """
-                    }
-                }
+            if (buildStatus == 'SUCCESS') {
+                messageText = "<b>Project</b> : Jenkinspvt \\n" +
+                              "<b>Branch</b>: main \\n" +
+                              "<b>Build</b>: OK \\n" +
+                              "<b>Test suite</b> = TEST CASE PASSED"
+            } else {
+                messageText = "<b>Project</b> : Jenkinspvt \\n" +
+                              "<b>Branch</b>: main \\n" +
+                              "<b>Build</b>: ERROR \\n" +
+                              "<b>Test suite</b> = TEST CASE FAILED"
             }
-        }   
+
+            withCredentials([
+                string(credentialsId: 'TELEGRAM_TOKEN', variable: 'TOKEN'),
+                string(credentialsId: 'CHAT_ID', variable: 'CHAT_ID')
+            ]) {
+                sh """
+                    curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+                    -d "chat_id=${CHAT_ID}" \
+                    -d "parse_mode=HTML" \
+                    -d "text=${messageText}"
+                """
+            }
+        }
+    }
+}
+
           }
           }
