@@ -17,6 +17,12 @@ pipeline {
         // Add more stages for building, testing, deploying, etc.
         // ...
         } 
+        post {
+                failure {
+                    echo "Checkout failed!"
+                    sendTelegramNotification("Checkout failed!")
+                }
+        }
     }
  post {
         success {
