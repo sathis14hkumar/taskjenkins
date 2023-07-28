@@ -18,27 +18,17 @@ pipeline {
         // ...
         } 
     }
-    post {
+ post {
         success {
-            echo "Pipeline Passed!"
-            sendTelegramNotification("Pipeline Passed!")
-        }
-       failure {
             script {
-                echo "Pipeline Failed!"
-                def failedStages = []
-                def failedMessages = []
-                for (stage in currentBuild.rawBuild.getExecution().getCurrentStage().getStages()) {
-                    if (stage.getHasFailure()) {
-                        failedStages.add(stage.getName())
-                        failedMessages.add(stage.getError().toString())
-                    }
-                }
-                def errorMessage = "Pipeline Failed in the following stages:\n"
-                for (int i = 0; i < failedStages.size(); i++) {
-                    errorMessage += "${failedStages[i]}: ${failedMessages[i]}\n"
-                }
-                sendTelegramNotification(errorMessage)
+                // Send success notification to Telegram
+                sendTelegramNotification("Pipeline Passed!")
+            }
+        }
+        failure {
+            script {
+                // Send failure notification to Telegram
+                sendTelegramNotification("Pipeline Failed!")
             }
         }
     }
