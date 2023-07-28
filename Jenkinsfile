@@ -16,7 +16,8 @@ pipeline {
 
         // Add more stages for building, testing, deploying, etc.
         // ...
-        }  
+        } 
+    }
     post {
         success {
             script {
@@ -30,8 +31,8 @@ pipeline {
                 sendTelegramNotification("Pipeline Failed!")
             }
         }
-    }
-}
+    
+
 }
 
 def sendTelegramNotification(message) {
