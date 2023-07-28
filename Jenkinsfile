@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout Source') {
             steps {
-                git branch: 'main', credentialsId:'gitrepo', url: 'https://github.com/sathis14hkumar/taskjenkins.git'
+                git branch: 'main', credentialsId:'gitrepo', url: 'https://github.comsathis14hkumar/taskjenkins.git'
     
         }
 
