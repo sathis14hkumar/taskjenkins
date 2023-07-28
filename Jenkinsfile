@@ -32,7 +32,7 @@ pipeline {
 
                         // Capture console output
                         try {
-                            consoleOutput = sh(returnStdout: true, script: 'cat ./build/output.log') // Assuming build output is logged in 'output.log'
+                            consoleOutput = sh(returnStdout: true, script: 'cat /var/lib/jenkins/workspace/web') // Assuming build output is logged in 'output.log'
                         } catch (e) {
                             consoleOutput = "Error occurred during build:\n${e}"
                             buildStatus = 'FAILED'
