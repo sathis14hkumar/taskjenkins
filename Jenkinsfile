@@ -34,6 +34,7 @@ pipeline {
     
 
 }
+}
 
 def sendTelegramNotification(message) {
     def TELEGRAM_BOT_TOKEN = '6647136812:AAHMC_K0t8Swq5AK3W5XZ1jdgLtIETeEbXQ'
@@ -41,4 +42,4 @@ def sendTelegramNotification(message) {
 
     sh "curl -X POST -H 'Content-Type: application/json' -d '{\"chat_id\":\"${TELEGRAM_CHAT_ID}\",\"text\":\"${message}\"}' https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
 }
-}
+
