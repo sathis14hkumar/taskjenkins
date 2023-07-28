@@ -23,30 +23,32 @@ pipeline {
 stage('Push Notification') {
     steps {
         script {
-            def buildStatus = currentBuild.result ?: 'UNKNOWN'
-            def messageText
+            withCredentials([string(credentialsId: 'TELEGRAM_TOKEN', variable: 'TOKEN'),
+                             string(credentialsId: 'CHAT_ID', variable: 'CHAT_ID')]) {
+                def buildStatus = currentBuild.result ?: 'UNKNOWN'
+                def consoleOutput = ""
 
-            if (buildStatus == 'SUCCESS') {
-                messageText = "<b>Project</b> : Jenkinspvt \\n" +
-                              "<b>Branch</b>: main \\n" +
-                              "<b>Build</b>: OK \\n" +
-                              "<b>Test suite</b> = TEST CASE PASSED"
-            } 
+                // Capture console output
+                try {
+                    consoleOutput = sh(returnStdout: true, script: 'echo "Build started" && ./your_build_script.sh')
+                } catch (e) {
+                    consoleOutput = "Error occurred during build:\n${e}"
+                    buildStatus = 'FAILED'
+                }
 
-            withCredentials([
-                string(credentialsId: 'TELEGRAM_TOKEN', variable: 'TOKEN'),
-                string(credentialsId: 'CHAT_ID', variable: 'CHAT_ID')
-            ]) {
+                def message = "<b>Project</b>: POC\n" +
+                              "<b>Branch</b>: master\n" +
+                              "<b>Build</b>: ${buildStatus}\n" +
+                              "<b>Console Output</b>:\n${consoleOutput}"
+
                 sh """
-                    curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
-                    -d "chat_id=${CHAT_ID}" \
-                    -d "parse_mode=HTML" \
-                    -d "text=${messageText}"
+                    curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode="HTML" -d text="${message}"
                 """
             }
         }
     }
 }
+
 
           }
           }
