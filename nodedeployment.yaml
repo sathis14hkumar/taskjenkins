@@ -4,7 +4,7 @@ metadata:
   name: node-app-deployment
   namespace: sathish
 spec:
-  replicas: 1    # Number of replicas you want to run
+  replicas: 2    # Number of replicas you want to run
   selector:
     matchLabels:
       app: node-app
