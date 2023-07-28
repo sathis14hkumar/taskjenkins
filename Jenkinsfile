@@ -20,20 +20,28 @@ pipeline {
     }
     post {
         success {
-            script {
-                // Send success notification to Telegram
-                sendTelegramNotification("Pipeline Passed!")
-            }
+            echo "Pipeline Passed!"
+            sendTelegramNotification("Pipeline Passed!")
         }
         failure {
             script {
-                // Send failure notification to Telegram
-                sendTelegramNotification("Pipeline Failed!")
+                echo "Pipeline Failed!"
+                def errorStages = []
+                def errorMessages = []
+                for (stage in pipeline.stages) {
+                    if (stage.state == 'FAILED') {
+                        errorStages.add(stage.name)
+                        errorMessages.add(stage.error)
+                    }
+                }
+                def errorMessage = "Pipeline Failed in the following stages:\n"
+                for (int i = 0; i < errorStages.size(); i++) {
+                    errorMessage += "${errorStages[i]}: ${errorMessages[i]}\n"
+                }
+                sendTelegramNotification(errorMessage)
             }
         }
-    
-
-}
+    }
 }
 
 def sendTelegramNotification(message) {
